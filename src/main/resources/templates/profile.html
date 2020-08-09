@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>无力社区</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/jquery/jquery-3.4.1.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+</head>
+<body style="background-color: #efefef">
+<div th:insert="navigation::nav"></div>
+<div class="container-fluid main" style="background-color: white">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12"  >
+            <h2 > <span class="glyphicon glyphicon-list" aria-hidden="true">
+                <span th:text="${actionname}"></span>
+            </span><hr>
+            </h2>
+            <div class="media" th:each="post:${posts.getPosts()}" th:if="${action.equals('myposts')}">
+                <div class="media-left">
+                    <a href="#" >
+                        <img class="media-object img-obj" style="height: 38px;height: 38px" th:src="${post.getUser().getAvatarUri()}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <a th:href="@{'/post/'+${post.getId()}}">
+                        <h3 class="media-heading" th:text="${post.getTitle()}" style="margin-left: 5px"></h3>
+                    </a>
+                    <h4 th:text="${post.getDescription()}" style="margin-left: 10px;margin-top: 10px"></h4>
+                    <span style="font-size: 12px;font-weight: normal;color: #999;" ><span th:text="${post.getComment_count()}+个回复"> </span> <span th:text="${post.getLike_count()}+个点赞"></span></span>
+                    <span style="font-size: 12px;font-weight: normal;color: #999;" th:text="${#dates.format(post.getGmt_create(),'yyyy-MM-dd')}"> </span>
+                    <span>
+                            1111
+                        </span>
+                </div>
+                <hr>
+            </div>
+            <nav aria-label="Page navigation" style="float: right">
+                <ul class="pagination">
+                    <li th:if="${posts.isShowFir()}">
+                        <a th:href="@{'/profile/'+${action}(page=${1})}" aria-label="First">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:if="${posts.isShowPre()}">
+                        <a th:href="@{'/profile/'+${action}(page=${posts.getCurrentPage()-1})}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                    <li  th:each="page:${posts.getPages()}" th:class="${posts.getCurrentPage()==page} ? 'active':''" > <a  th:text="${page}" th:href="@{'/profile/'+${action}(page=${page})}"></a></li>
+                    <li th:if="${posts.isShowNex()}">
+                        <a th:href="@{'/profile/'+${action}(page=${posts.getCurrentPage()+1})}" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+                    <li th:if="${posts.isShowEnd()}">
+                        <a th:href="@{'/profile/'+${action}(page=${posts.getCount()})}" aria-label="End">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12"  >
+            <h2>
+                这是个说明
+            </h2>
+            <hr>
+            <div class="list-group">
+                <a href="/profile/myposts"   th:class="${action=='myposts'} ? 'active list-group-item':'list-group-item'">
+                   我发布的内容
+                </a>
+                <a href="/profile/forks"   th:class="${action=='myforks'} ? 'active list-group-item':'list-group-item'">我关注的内容</a>
+                <a href="/profile/replies" th:class="${action=='myreplies'} ? 'active list-group-item':'list-group-item'">
+                    <span class="badge">0</span>
+                    我收到的回复</a>
+                <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+                <a href="#" class="list-group-item">Vestibulum at eros</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

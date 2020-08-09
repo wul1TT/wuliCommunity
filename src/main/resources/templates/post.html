@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>无力社区</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/jquery/jquery-3.4.1.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+</head>
+<body style="background-color: #efefef">
+<div th:insert="navigation::nav"></div>
+<div class="container-fluid main" style="background-color: white">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" >
+            <h2 > <span class="glyphicon glyphicon-leaf" aria-hidden="true">
+               内容详情
+                   </span><hr>
+            </h2>
+            <h3 th:text="${post.getTitle()}"> </h3>
+            <span style="font-size: 12px;font-weight: normal;color: #999;" >
+                 阅读数：<span th:if="${post.getView_count()<=999}" th:text="${post.getView_count()}"></span> <span th:if="${post.getView_count()>999}" >999+</span> |
+                 回复数：<span th:if="${post.getComment_count()<=999}" th:text="${post.getComment_count()}"> </span><span th:if="${post.getComment_count()>999}">999+</span> |
+                 来自：<span th:text="${post.getUser().getName()}"></span> |
+                 &nbsp&nbsp发布于<span th:text="${#dates.format(post.getGmt_create(),'yyyy-MM-dd')}"></span>
+            </span>&nbsp
+            <a th:if="${session.myId!=null&&session.myId==post.getUser().getId()}" th:href="@{'/publish/'+${post.getId()}}">
+                <span  class="glyphicon glyphicon-pencil" aria-hidden="true" >编辑</span>
+            </a>
+            <hr>
+            <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                <h4 th:text="${post.getDescription()}"></h4>
+            </div>
+
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12"  >
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h2>
+                    作者
+                </h2>
+                <div class="media-middle">
+                    <img class="media-object img-obj" style="height:45px;width: 47px" th:src="${post.getUser().getAvatarUri()}">
+                </div>
+                    <h3>
+                        <span th:text="${post.getUser().getName()}"></span>
+                    </h3>
+                <hr>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
