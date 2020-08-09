@@ -3,4 +3,7 @@
 ## 技术栈
 springboot 
 bootstrap 
-mybatis 
+mybatis
+
+##database
+Mysql 
