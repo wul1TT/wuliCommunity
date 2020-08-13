@@ -30,6 +30,7 @@ public class SessionInterceptor implements HandlerInterceptor {
                     {
                         request.getSession().setAttribute("myuser",user);
                         request.getSession().setAttribute("myId",user.getId());
+                        //System.out.println(user.getName());
                     }
                     break;
                 }

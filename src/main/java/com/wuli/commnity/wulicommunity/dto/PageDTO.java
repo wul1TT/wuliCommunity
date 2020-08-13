@@ -1,65 +1,13 @@
 package com.wuli.commnity.wulicommunity.dto;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+@Data
 public class PageDTO {
-    public List<PostDTO> getPosts() {
-        return posts;
-    }
 
-    public void setPosts(List<PostDTO> posts) {
-        this.posts = posts;
-    }
-
-    public boolean isShowPre() {
-        return showPre;
-    }
-
-    public void setShowPre(boolean showPre) {
-        this.showPre = showPre;
-    }
-
-    public boolean isShowFir() {
-        return showFir;
-    }
-
-    public void setShowFir(boolean showFir) {
-        this.showFir = showFir;
-    }
-
-    public boolean isShowNex() {
-        return showNex;
-    }
-
-    public void setShowNex(boolean showNex) {
-        this.showNex = showNex;
-    }
-
-    public boolean isShowEnd() {
-        return showEnd;
-    }
-
-    public void setShowEnd(boolean showEnd) {
-        this.showEnd = showEnd;
-    }
-
-    public Integer getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(Integer currentPage) {
-        this.currentPage = currentPage;
-    }
-
-    public List<Integer> getPages() {
-        return pages;
-    }
-
-    public void setPages(List<Integer> pages) {
-        this.pages = pages;
-    }
 
     private List<PostDTO> posts;
     private boolean showPre;
@@ -68,15 +16,6 @@ public class PageDTO {
     private boolean showEnd;
     private Integer currentPage;
     private List <Integer> pages=new ArrayList<>();
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
     private Integer count;
     public void setPagination(Integer totalCount, Integer page, Integer size) {
        if(totalCount==0)
