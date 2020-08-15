@@ -2,6 +2,8 @@ package com.wuli.commnity.wulicommunity.service;
 
 import com.wuli.commnity.wulicommunity.dto.PageDTO;
 import com.wuli.commnity.wulicommunity.dto.PostDTO;
+import com.wuli.commnity.wulicommunity.exception.CustomizeErrorCode;
+import com.wuli.commnity.wulicommunity.exception.CustomizeException;
 import com.wuli.commnity.wulicommunity.mapper.PostMapper;
 import com.wuli.commnity.wulicommunity.mapper.UserMapper;
 import com.wuli.commnity.wulicommunity.model.Post;
@@ -73,6 +75,10 @@ public class PostService {
 
     public PostDTO getById(Integer id) {
         Post post=postMapper.getById(id);
+        if(post==null)
+        {
+            throw new CustomizeException(CustomizeErrorCode.POST_NOT_FOUND);
+        }
         PostDTO postDTO=new PostDTO();
         BeanUtils.copyProperties(post,postDTO);
         Integer creator=postMapper.findCreatorById(id);
@@ -91,8 +97,10 @@ public class PostService {
         else
         {
             post.setGmt_modified(System.currentTimeMillis());
-            postMapper.updatePost(id,post.getTitle(),post.getDescription(),post.getGmt_modified());
-            System.out.println(post.getDescription());
+           int updated= postMapper.updatePost(id,post.getTitle(),post.getDescription(),post.getGmt_modified());
+           if(updated==0)
+               throw new CustomizeException(CustomizeErrorCode.POST_NOT_FOUND);
+           //System.out.println(post.getDescription());
         }
     }
 

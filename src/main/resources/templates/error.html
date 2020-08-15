@@ -13,10 +13,17 @@
 <body style="background-color: #efefef"></body>
 <div class="container-fluid">
     <div class="jumbotron" >
-        <h1>出错啦！！！</h1>
-        <p th:text="${#messages}"></p>
+        <h1>出错啦>_<！！！</h1>
+        <p th:text="${message}"></p>
         <p><a class="btn btn-primary btn-lg" href="/" role="button">回到主页</a></p>
+        <div th:if="${type==400}" style="float: contour">
+            <img class="media-object img-obj" src="/picture/gsorry.gif" style="height: 300px;width:293px">
+        </div>
+        <div th:if="${type==500}" >
+            <img class="media-object img-obj" src="/picture/gsorry.gif" style="height: 300px;width:293px">
+        </div>
     </div>
+
 </div>
 
 

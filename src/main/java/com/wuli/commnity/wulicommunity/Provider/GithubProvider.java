@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.wuli.commnity.wulicommunity.dto.AccessTokenDTO;
 import com.wuli.commnity.wulicommunity.dto.GithubUser;
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.Objects;
 
 @Component
 public class GithubProvider {
+
     public String getAccessToken(AccessTokenDTO accessTokenDTO)
     {
          MediaType mediaType = MediaType.get("application/json; charset=utf-8");
@@ -35,7 +37,8 @@ public class GithubProvider {
     {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("https://api.github.com/user?access_token=6a81da518eea82c44f3597f2f1503406f43f6884")
+                .url("https://api.github.com/user")
+                .header("Authorization","token "+accessToken)
                 .build();
         try {
             Response response = client.newCall(request).execute();
