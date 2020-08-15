@@ -33,5 +33,5 @@ public interface PostMapper {
     @Update("update post set description=#{description},title=#{title},gmt_modified=#{gmt_modified} where id=#{id}")
     Integer updatePost(@Param("id") Integer id, @Param("title") String title,@Param("description") String description,@Param("gmt_modified") long gmt_modified);
     @Update("update post set title=#{title},description=#{description},gmt_create=#{gmt_create},gmt_modified=#{gmt_modified},creator=#{creator},tag=#{tag},view_count=#{view_count},like_count=#{like_count},comment_count=#{comment_count} where id=#{id}")
-    void updateFullPost( Post posts);
+    void updateFullPost( Post post);
 }
