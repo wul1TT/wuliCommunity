@@ -9,10 +9,7 @@ import com.wuli.commnity.wulicommunity.model.User;
 import com.wuli.commnity.wulicommunity.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,6 +27,10 @@ public class CommentController {
         if (user==null)
         {
           return  ResultDTO.errorOf(CustomizeErrorCode.NO_LOG_IN);
+        }
+        if(commentDTO==null||commentDTO.getContent()==null||commentDTO.getContent().equals(""))
+        {
+            return ResultDTO.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
         }
         Comment comment=new Comment();
         comment.setType(commentDTO.getType());

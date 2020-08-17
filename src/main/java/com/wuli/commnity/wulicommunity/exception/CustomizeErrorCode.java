@@ -6,8 +6,8 @@ public enum CustomizeErrorCode implements InterfaceCustomizeErrorCode{
     TARGET_NOT_FOUND("没有选中要评论的目标或该目标已被删除",2002),
     SYS_ERROR("服务器撑不住了>_<",2003),
     COMMENT_TYPE_WRONG("评论类型不正确或不存在",2004),
-    COMMENT_NOT_FOUND("该评论已被删除或不存在",2005)
-    ;
+    COMMENT_NOT_FOUND("该评论已被删除或不存在",2005),
+    CONTENT_IS_EMPTY("评论内容为空",2006 );
     private Integer code;
     private String message;
     @Override

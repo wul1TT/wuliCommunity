@@ -11,3 +11,46 @@
     font-weight: normal;
     color: #999;
 }
+.display-flex{
+    display: flex;
+}
+.auto-img{
+    max-width: 410px;
+    max-height: 250px;
+    height: auto;
+    width: auto\9;
+    width: 100%;
+}
+.menu{
+    color: #999;
+    margin-top: 5px;
+}
+.menu .icon
+{
+    margin-right: 20px;
+    cursor: pointer;
+}
+.menu .icon:hover
+{
+    color: #337ab7;
+}
+.menu .active
+{
+    color: #337ab7;
+}
+.hr-margin{
+    margin-top: 0 ;
+}
+.btn-margin{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.sub-comment{
+    border-radius: 5px;
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+}

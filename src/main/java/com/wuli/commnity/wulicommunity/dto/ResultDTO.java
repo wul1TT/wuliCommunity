@@ -27,7 +27,7 @@ public class ResultDTO {
     {
         ResultDTO resultDTO=new ResultDTO();
         resultDTO.setCode(1999);
-        resultDTO.setMessage("请求成功");
+        resultDTO.setMessage("发布成功");
         return resultDTO;
     }
 

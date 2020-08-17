@@ -8,8 +8,22 @@
     <link rel="stylesheet" href="/css/community.css">
     <script src="/jquery/jquery-3.4.1.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-
 </head>
+<script type="application/javascript">
+    window.onload=function () {
+        // debugger;
+        var item = window.localStorage.getItem("closable");
+        if(item!=null)
+        {
+            if(item=="true")
+            {
+                window.close();
+                window.localStorage.removeItem("closable");
+            }
+        }
+    }
+
+</script>
 <body style="background-color: #efefef">
 <div th:insert="navigation::nav"></div>
 <div class="container-fluid main" style="background-color: white">
@@ -74,7 +88,9 @@
             <h4 style="text-align: center">
                 今天刷Leetcode了吗
             </h4>
-            <img src="/picture/1.jpg" style="height: 250px;width: auto">
+            <div style="text-align: center">
+                <img class="auto-img" src="/picture/1.jpg" style="margin: 0 auto">
+            </div>
         </div>
     </div>
 </div>
