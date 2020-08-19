@@ -1,5 +1,6 @@
 package com.wuli.commnity.wulicommunity.mapper;
 
+import com.wuli.commnity.wulicommunity.dto.PostDTO;
 import com.wuli.commnity.wulicommunity.model.Post;
 import org.apache.ibatis.annotations.*;
 
@@ -10,7 +11,7 @@ public interface PostMapper {
     @Insert("insert into post (title,description,gmt_create,gmt_modified,creator,tag) values(#{title},#{description},#{gmt_create},#{gmt_modified},#{creator},#{tag})")
     public void create(Post post);
 
-    @Select("select *from post limit #{size} offset #{offset} ")
+    @Select("select *from post order by gmt_create desc limit #{size} offset #{offset} ")
     List<Post> list(@Param("offset") Integer offset,@Param("size") Integer size);
 
     @Select(" select count(1) from post;")
@@ -19,7 +20,7 @@ public interface PostMapper {
     @Select("select count(1) from post where creator=#{userId}")
     Integer findCountById(@Param("userId") Integer userId);
 
-    @Select("select *from post where creator=#{userId} limit #{size} offset #{offset} ")
+    @Select("select *from post where creator=#{userId} order by gmt_create desc limit #{size} offset #{offset} ")
     List<Post> findListById(@Param("userId") Integer id, @Param("offset") Integer offset, @Param("size") Integer size);
 
     @Select("select * from post where id=#{id}")
@@ -33,5 +34,8 @@ public interface PostMapper {
     @Update("update post set description=#{description},title=#{title},gmt_modified=#{gmt_modified} where id=#{id}")
     Integer updatePost(@Param("id") Integer id, @Param("title") String title,@Param("description") String description,@Param("gmt_modified") long gmt_modified);
     @Update("update post set title=#{title},description=#{description},gmt_create=#{gmt_create},gmt_modified=#{gmt_modified},creator=#{creator},tag=#{tag},view_count=#{view_count},like_count=#{like_count},comment_count=#{comment_count} where id=#{id}")
-    void updateFullPost( Post post);
+    Integer updateFullPost(Post post);
+    @Select("select * from post where tag regexp #{tag} and id !=#{id}")
+    List<PostDTO> findRelated(PostDTO post);
+
 }

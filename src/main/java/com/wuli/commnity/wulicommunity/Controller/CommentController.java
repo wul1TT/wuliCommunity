@@ -1,5 +1,6 @@
 package com.wuli.commnity.wulicommunity.Controller;
 
+import com.wuli.commnity.wulicommunity.dto.CommentCurrentDTO;
 import com.wuli.commnity.wulicommunity.dto.CommentDTO;
 import com.wuli.commnity.wulicommunity.dto.ResultDTO;
 import com.wuli.commnity.wulicommunity.exception.CustomizeErrorCode;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -40,5 +42,13 @@ public class CommentController {
         comment.setCommentator(user.getId());
         commentService.insert(comment);
         return ResultDTO.okOf();
+    }
+    @ResponseBody
+    @RequestMapping(value = "/comment/{id}",method = RequestMethod.GET)
+    public ResultDTO comments(@PathVariable(name = "id") Integer id)
+    {
+         List<CommentCurrentDTO> commentDTOS= commentService.getByCommentId(id);
+
+        return ResultDTO.okOf(commentDTOS);
     }
 }

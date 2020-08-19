@@ -12,5 +12,6 @@ public class CommentCurrentDTO {
     private long gmt_create;
     private Integer like_count;
     private String content;
+    private Integer comment_count;
     private User user;
 }

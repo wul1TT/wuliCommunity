@@ -2,36 +2,54 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>无力社区</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/css/community.css">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="/css/community.css" rel="stylesheet">
     <script src="/jquery/jquery-3.4.1.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/community.js"></script>
+    <script src="/js/handlebars.min-v4.7.6.js"></script>
+    <script src="/js/moment.js"></script>
 
 </head>
 <body style="background-color: #efefef">
 <div th:insert="navigation::nav"></div>
 <div class="container-fluid main" style="background-color: white">
     <div class="row">
-        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" >
-            <h2 > <span class="glyphicon glyphicon-leaf" aria-hidden="true">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h2> <span aria-hidden="true" class="glyphicon glyphicon-leaf">
                内容详情
-                   </span><hr>
+                   </span>
+                <hr>
             </h2>
-            <h3 th:text="${post.getTitle()}"> </h3>
-            <span style="font-size: 12px;font-weight: normal;color: #999;" >
-                 阅读数：<span th:if="${post.getView_count()<=999}" th:text="${post.getView_count()}"></span> <span th:if="${post.getView_count()>999}" >999+</span> |
-                 回复数：<span th:if="${post.getComment_count()<=999}" th:text="${post.getComment_count()}"> </span><span th:if="${post.getComment_count()>999}">999+</span> |
+            <h3 th:text="${post.getTitle()}"></h3>
+            <span style="font-size: 12px;font-weight: normal;color: #999;">
+                 阅读数：<span th:if="${post.getView_count()<=999}" th:text="${post.getView_count()}"></span> <span
+                    th:if="${post.getView_count()>999}">999+</span> |
+                 回复数：<span th:if="${post.getComment_count()<=999}" th:text="${post.getComment_count()}"> </span><span
+                    th:if="${post.getComment_count()>999}">999+</span> |
                  来自：<span th:text="${post.getUser().getName()}"></span> |
                  &nbsp&nbsp发布于<span th:text="${#dates.format(post.getGmt_create(),'yyyy-MM-dd')}"></span>
             </span>&nbsp
-            <a th:if="${session.myId!=null&&session.myId==post.getUser().getId()}" th:href="@{'/publish/'+${post.getId()}}">
-                <span  class="glyphicon glyphicon-pencil" aria-hidden="true" >编辑</span>
+            <a th:href="@{'/publish/'+${post.getId()}}"
+               th:if="${session.myId!=null&&session.myId==post.getUser().getId()}">
+                <span aria-hidden="true" class="glyphicon glyphicon-pencil">编辑</span>
             </a>
+            <div style="margin-top: 5px">
+                <!--标签-->
+                <span th:if="${post.getTag()!=null&&!post.getTag().equals('')}">
+                     <span class="label label-info" style="margin-right: 10px"
+                           th:each="tag:${post.getTag().split(' ')}" th:if="${!tag.equals('')}">
+                         <span class="glyphicon glyphicon-tags" style="margin-right: 5px"></span>
+                         <span th:text="${tag}"></span>
+                     </span>
+                </span>
+
+            </div>
+
             <hr>
-            <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h4 th:text="${post.getDescription()}"></h4>
                 <hr>
             </div>
@@ -40,11 +58,11 @@
                 <span th:text="共+${post.getComment_count()}+个评论"></span>
             </h3>
             <hr style="margin-top: 0">
-<!--            评论列表-->
+            <!--            评论列表-->
             <div class="media" th:each="comment:${comments}">
                 <div class="media-left">
                     <a href="#">
-                        <img class="media-object img-obj"  th:src="${comment.getUser().getAvatarUri()}" alt="">
+                        <img alt="" class="media-object img-obj" th:src="${comment.getUser().getAvatarUri()}">
                     </a>
                 </div>
                 <div class="media-body">
@@ -53,67 +71,81 @@
                         <span th:text="${comment.getContent()}"></span>
                     </div>
                     <div class="menu">
-                        <span class="glyphicon glyphicon-thumbs-up icon"  ></span>
-                        <span class="glyphicon glyphicon-comment icon" data-target="" data-toggle="collapse" th:data-id="${comment.getId()}" th:data-collapse="collapse" onclick="collapse(this)"></span>
-                        <span class="pull-right" th:text="${#dates.format(comment.getGmt_create(),'yyyy-MM-dd')}"></span>
+                        <div>
+                            <span class="glyphicon glyphicon-thumbs-up icon"></span>
+                            <button data-target=""
+                                    data-toggle="collapse" onclick="collapse(this)"
+                                    style="padding: 0 0; cursor: pointer"
+                                    th:data-collapse="collapse" th:data-id="${comment.getId()}">
+                                <span class="glyphicon glyphicon-comment"></span>
+                                <b style="margin-bottom: 5px" th:text="${comment.getComment_count()}"></b>
+                            </button>
+
+                        </div>
+
+                        <span class="pull-right"
+                              th:text="${#dates.format(comment.getGmt_create(),'yyyy-MM-dd')}"></span>
                     </div>
 
-<!--             二级评论               -->
-                        <div class="collapse sub-comment col-lg-12 col-md-12 col-sm-12 col-xs-12"  th:id="${comment.getId()}">
-                            <div class="media" th:each="comment:${comments}">
-                                <div class="media-left">
-                                    <a href="#">
-                                        <img class="media-object img-obj"  th:src="${comment.getUser().getAvatarUri()}" alt="">
-                                    </a>
-                                </div>
-                                <div class="media-body">
-                                    <h4 class="media-heading" th:text="${comment.getUser().getName()}"></h4>
-                                    <div>
-                                        <span th:text="${comment.getContent()}"></span>
-                                    </div>
-                                    <div class="menu">
-                                        <span class="pull-right" th:text="${#dates.format(comment.getGmt_create(),'yyyy-MM-dd')}"></span>
-                                    </div>
-                                </div>
-                                <hr class="hr-margin">
-                            </div>
-                            <div >
-                                <input type="text" class="form-control" placeholder="评论一下吧✧⁺⸜(>▾<)⸝⁺✧">
-                                <button type="button" class="btn btn-success btn-margin pull-right" >评论</button>
-                            </div>
-                    </div>
+                    <!--             二级评论               -->
+                    <div class="collapse sub-comment col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                         th:id="${comment.getId()}">
 
+                        <div>
+                            <input class="form-control" placeholder="评论一下吧✧⁺⸜(>▾<)⸝⁺✧"
+                                   th:id="${'reply-'+comment.getId()}"
+                                   type="text">
+                            <button class="btn btn-success btn-margin pull-right" onclick="comment(this)"
+                                    th:data-id="${comment.getId()}"
+                                    type="button">评论
+                            </button>
+                        </div>
+                    </div>
                 </div>
-
                 <hr class="hr-margin">
             </div>
             <!--            输入评论内容-->
-            <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12 display-flex" style="margin-bottom: 5px">
-                <img class="media-object img-obj" style="height:45px;width: 47px" th:src="${post.getUser().getAvatarUri()}">
-                <h4  th:text="${post.getUser().getName()}" style="margin-left: 5px;padding-top: 5px"></h4>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 display-flex" style="margin-bottom: 5px">
+                <img class="media-object img-obj" style="height:45px;width: 47px"
+                     th:src="${post.getUser().getAvatarUri()}">
+                <h4 style="margin-left: 5px;padding-top: 5px" th:text="${post.getUser().getName()}"></h4>
             </div>
-            <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 10px">
-                <input type="hidden" id="post_id" th:value="${post.getId()}">
-<!--                <input type="hidden" id="post_id" th:value=12345>-->
-                <textarea class="form-control" rows="7" id="comment_content" ></textarea>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 10px">
+                <input id="post_id" th:value="${post.getId()}" type="hidden">
+                <!--                <input type="hidden" id="post_id" th:value=12345>-->
+                <textarea class="form-control" id="comment_content" rows="7"></textarea>
             </div>
-            <button type="button" class="btn btn-success" style="float: right;margin-bottom: 10px" onclick="post()">回复</button>
+            <button class="btn btn-success" onclick="post()" style="float: right;margin-bottom: 10px" type="button">回复
+            </button>
         </div>
-<!--        右侧信息显示-->
-        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12"  >
+        <!--        右侧信息显示-->
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h2>
                     作者
                 </h2>
                 <div class="media-middle">
-                    <img class="media-object img-obj" style="height:45px;width: 47px" th:src="${post.getUser().getAvatarUri()}">
+                    <img class="media-object img-obj" style="height:45px;width: 47px"
+                         th:src="${post.getUser().getAvatarUri()}">
                 </div>
-                    <h3>
-                        <span th:text="${post.getUser().getName()}"></span>
-                    </h3>
-                <hr>
+                <h3>
+                    <span th:text="${post.getUser().getName()}"></span>
+                </h3>
+                <hr class="hr-margin">
             </div>
-
+                <div style="text-align: center">
+                    <img class="auto-img img-thumbnail" src="/picture/1.jpg" style="margin: 0 auto">
+                </div>
+            <h4>
+                相关问题
+            </h4>
+            <hr class="hr-margin">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <li th:each="relatedpost:${relatedposts}">
+                    <a th:href="@{'/post/'+${relatedpost.getId()}}" th:text="${relatedpost.getTitle()}" style="font-size: medium">
+                    </a>
+                </li>
+            </div>
         </div>
     </div>
 </div>

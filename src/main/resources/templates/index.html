@@ -36,14 +36,13 @@
             <hr>
                 <div class="media" th:each="post:${posts.getPosts()}" >
                     <div class="media-left">
-                        <a href="#" >
                             <img class="media-object img-obj" style="height: 38px;height: 38px" th:src="${post.getUser().getAvatarUri()}">
-                        </a>
                     </div>
                     <div class="media-body">
-                        <a th:href="@{'/post/'+${post.getId()}}">
-                            <h3 class="media-heading" th:text="${post.getTitle()}" style="margin-left: 5px"></h3>
-                        </a>
+                            <a th:href="@{'/post/'+${post.getId()}}" >
+                                <h3 class="media-heading" th:text="${post.getTitle()}" style="margin-left: 5px">
+                                </h3>
+                            </a>
 
                         <h4 th:text="${post.getDescription()}" style="margin-left: 10px;margin-top: 10px"></h4>
                         <span style="font-size: 12px;font-weight: normal;color: #999;" ><span th:if="${post.getComment_count()<=999}" th:text="${post.getComment_count()}+个回复"> </span><span th:if="${post.getComment_count()>999}">999+个回复</span> <span th:if="${post.getLike_count()<=999}" th:text="${post.getLike_count()}+个点赞"></span><span th:if="${post.getLike_count()>999}">999+个点赞</span></span>
@@ -89,7 +88,7 @@
                 今天刷Leetcode了吗
             </h4>
             <div style="text-align: center">
-                <img class="auto-img" src="/picture/1.jpg" style="margin: 0 auto">
+                <img class="auto-img img-thumbnail" src="/picture/1.jpg" style="margin: 0 auto">
             </div>
         </div>
     </div>

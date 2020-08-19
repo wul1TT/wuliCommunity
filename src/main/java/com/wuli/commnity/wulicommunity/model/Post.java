@@ -14,5 +14,5 @@ public class Post {
     private Integer comment_count;
     private Integer view_count;
     private Integer like_count;
-    private Integer tag;
+    private String  tag;
 }

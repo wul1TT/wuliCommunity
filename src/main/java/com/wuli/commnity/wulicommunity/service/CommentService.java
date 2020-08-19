@@ -60,6 +60,8 @@ public class CommentService {
             }
             else
             {
+                comment1.setComment_count(comment1.getComment_count()+1);
+                commentMapper.updateCommentCount(comment1);
                 commentMapper.insert(comment);
             }
         }
@@ -69,6 +71,20 @@ public class CommentService {
         List<CommentCurrentDTO> commentCurrentDTOS=new ArrayList<>();
         List<Comment> comments;
         comments=commentMapper.findByPostId(id);
+        for (Comment comment : comments) {
+            User user=userMapper.findById(comment.getCommentator());
+            CommentCurrentDTO commentCurrentDTO=new CommentCurrentDTO();
+            BeanUtils.copyProperties(comment,commentCurrentDTO);
+            commentCurrentDTO.setUser(user);
+            commentCurrentDTOS.add(commentCurrentDTO);
+        }
+        return commentCurrentDTOS;
+    }
+
+    public  List<CommentCurrentDTO> getByCommentId(Integer id) {
+        List<CommentCurrentDTO> commentCurrentDTOS=new ArrayList<>();
+        List<Comment> comments;
+        comments=commentMapper.findByCommentId(id);
         for (Comment comment : comments) {
             User user=userMapper.findById(comment.getCommentator());
             CommentCurrentDTO commentCurrentDTO=new CommentCurrentDTO();

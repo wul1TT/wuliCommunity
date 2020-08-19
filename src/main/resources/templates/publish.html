@@ -2,46 +2,79 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>无力社区</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/css/community.css">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="/css/community.css" rel="stylesheet">
     <script src="/jquery/jquery-3.4.1.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/community.js"></script>
 
 </head>
-<body style="background-color: #efefef" >
+<body style="background-color: #efefef">
 <div th:insert="navigation::nav"></div>
 <div class="container-fluid main" style="background-color: white">
     <div class="row">
-        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" >
-            <h2> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h2><span aria-hidden="true" class="glyphicon glyphicon-plus"></span>发起</h2>
             <hr>
-            <form style="margin-bottom: 10px" action="/publish" method="post">
-                <input type="hidden" name="id" th:value="${id}">
+            <form action="/publish" method="post" style="margin-bottom: 10px">
+                <input name="id" th:value="${id}" type="hidden">
                 <div class="form-group">
                     <label for="title" style="margin-bottom: 10px">问题标题</label>
-                    <input type="text" class="form-control" id="title" th:value="${title}" name="title" placeholder="请输入问题标题">
+                    <input autocomplete="off" class="form-control" id="title" name="title" placeholder="请输入问题标题"
+                           th:value="${title}" type="text">
                 </div>
                 <div class="form-group">
-                    <label for="description"style="margin-bottom: 10px">问题内容</label>
-                    <textarea name="description" id="description" class="form-control" th:text="${description}"  rows="25"></textarea>
+                    <label for="description" style="margin-bottom: 10px">问题内容</label>
+                    <textarea class="form-control" id="description" name="description" rows="25"
+                              th:text="${description}"></textarea>
                 </div>
-                 <div th:if="${error!=null}">
-                    <div th:text="${error}"  class="alert alert-danger"></div>
-                 </div>
+                <div th:if="${error!=null}">
+                    <div class="alert alert-danger" th:text="${error}"></div>
+                </div>
+                <!--      标签      -->
+                <div class="form-group">
+                    <label for="tag">添加标签:</label>
+                    <input autocomplete="off" class="form-control" id="tag" name="tag" onclick="displayTab()"
+                           placeholder="单击输入框选择标签，自动以空格分隔，单击标签添加，双击删除"
+                           th:value="${tag}" type="text" readonly="readonly"><!--          即使input什么都不输入 也不为null 而是“”          -->
+                    <!--选择标签-->
+                    <div id="Tab" style="margin-top: 10px;display: none">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li  role="presentation" th:each="cache:${caches}">
+                                <a data-toggle="tab"
+                                   th:href="@{'#'+${cache.getTabName()}}"
+                                   role="tab"
+                                   th:text="${cache.getTabName()}"></a>
+                            </li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content" style="margin-top: 10px">
+                            <div class="tab-pane " th:each="cache: ${caches}" th:id="${cache.getTabName()}" role="tabpanel">
+                                 <span class="label label-info" th:each="cacheTag:${cache.getTags()}"
+                                       ondblclick="removeTag(this)" onclick="selectTag(this)" th:data-tag="${cacheTag}"
+                                       style="margin-right: 10px; cursor: pointer" >
+                                       <span class="glyphicon glyphicon-tags" style="margin-right: 5px;margin-bottom: 15px" th:text="${' '+cacheTag}"> </span>
+                                     <br  th:if="${(cache.getTags().indexOf(cacheTag)+1)%4==0}" >
+                                 </span>
+                            </div>
+                        </div>
+                    </div>
 
-                 <button type="submit" class="btn btn-success" style="margin-bottom: 20px;float: right" >提交</button>
-             </form>
+                </div>
+                <button class="btn btn-success" style="margin-bottom: 20px;float: right" type="submit">提交</button>
+            </form>
 
-         </div>
-         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12"  >
-             <h2>
-                 这是个说明
-             </h2>
-             Nothing
-         </div>
-     </div>
- </div>
- </body>
- </html>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h2>
+                这是个说明
+            </h2>
+            Nothing
+        </div>
+    </div>
+</div>
+</body>
+</html>
