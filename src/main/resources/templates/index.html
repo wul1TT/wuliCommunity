@@ -34,7 +34,7 @@
             </span><hr>
             </h2>
             <hr>
-                <div class="media" th:each="post:${posts.getPosts()}" >
+                <div class="media" th:each="post:${posts.getTList()}" >
                     <div class="media-left">
                             <img class="media-object img-obj" style="height: 38px;height: 38px" th:src="${post.getUser().getAvatarUri()}">
                     </div>
@@ -44,7 +44,7 @@
                                 </h3>
                             </a>
 
-                        <h4 th:text="${post.getDescription()}" style="margin-left: 10px;margin-top: 10px"></h4>
+                        <h4 class="single-text" th:text="${post.getDescription()}" style="margin-left: 10px;margin-top: 10px"></h4>
                         <span style="font-size: 12px;font-weight: normal;color: #999;" ><span th:if="${post.getComment_count()<=999}" th:text="${post.getComment_count()}+个回复"> </span><span th:if="${post.getComment_count()>999}">999+个回复</span> <span th:if="${post.getLike_count()<=999}" th:text="${post.getLike_count()}+个点赞"></span><span th:if="${post.getLike_count()>999}">999+个点赞</span></span>
                         <span style="font-size: 12px;font-weight: normal;color: #999;" th:text="${#dates.format(post.getGmt_create(),'yyyy-MM-dd')}"> </span>
                         <span>

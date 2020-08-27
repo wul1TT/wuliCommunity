@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 @Data
-public class PageDTO {
+public class PageDTO<T> {
 
 
-    private List<PostDTO> posts;
+    private List<T> tList;
     private boolean showPre;
     private boolean showFir;
     private boolean showNex;

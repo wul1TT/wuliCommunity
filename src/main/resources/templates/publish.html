@@ -9,6 +9,8 @@
     <script src="/jquery/jquery-3.4.1.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/community.js"></script>
+    <link rel="stylesheet" href="/editor/css/editormd.min.css">
+    <script src="/editor/editormd.min.js"></script>
 
 </head>
 <body style="background-color: #efefef">
@@ -25,16 +27,30 @@
                     <input autocomplete="off" class="form-control" id="title" name="title" placeholder="请输入问题标题"
                            th:value="${title}" type="text">
                 </div>
-                <div class="form-group">
+                <div  id="editor">
                     <label for="description" style="margin-bottom: 10px">问题内容</label>
                     <textarea class="form-control" id="description" name="description" rows="25"
-                              th:text="${description}"></textarea>
+                              th:text="${description}" style="display: none">
+                    </textarea>
+                    <script type="text/javascript">
+                        $(function() {
+                            var editor = editormd("editor", {
+                                 width  : "100%",
+                                 height : "350px",
+                                path   : "/editor/lib/",
+                                delay:0,
+                                imageUpload    : true,
+                                imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                                imageUploadURL : "/file/upload",
+                            });
+                        });
+                    </script>
                 </div>
                 <div th:if="${error!=null}">
                     <div class="alert alert-danger" th:text="${error}"></div>
                 </div>
                 <!--      标签      -->
-                <div class="form-group">
+                <div >
                     <label for="tag">添加标签:</label>
                     <input autocomplete="off" class="form-control" id="tag" name="tag" onclick="displayTab()"
                            placeholder="单击输入框选择标签，自动以空格分隔，单击标签添加，双击删除"
@@ -43,7 +59,7 @@
                     <div id="Tab" style="margin-top: 10px;display: none">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist">
-                            <li  role="presentation" th:each="cache:${caches}">
+                            <li  role="presentation" th:each="cache,cacheStat:${caches}" th:class="${cacheStat.first ? 'active':''}">
                                 <a data-toggle="tab"
                                    th:href="@{'#'+${cache.getTabName()}}"
                                    role="tab"
@@ -52,12 +68,13 @@
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content" style="margin-top: 10px">
-                            <div class="tab-pane " th:each="cache: ${caches}" th:id="${cache.getTabName()}" role="tabpanel">
+                            <div  th:each="cache: ${caches}" th:id="${cache.getTabName()}" role="tabpanel"
+                                 th:class="${cacheStat.first ? 'active tab-pane':'tab-pane'}">
                                  <span class="label label-info" th:each="cacheTag:${cache.getTags()}"
                                        ondblclick="removeTag(this)" onclick="selectTag(this)" th:data-tag="${cacheTag}"
-                                       style="margin-right: 10px; cursor: pointer" >
+                                       style="margin-right: 10px; cursor: pointer;white-space: normal">
                                        <span class="glyphicon glyphicon-tags" style="margin-right: 5px;margin-bottom: 15px" th:text="${' '+cacheTag}"> </span>
-                                     <br  th:if="${(cache.getTags().indexOf(cacheTag)+1)%4==0}" >
+<!--                                     <br  th:if="${(cache.getTags().indexOf(cacheTag)+1)%4==0}" >-->
                                  </span>
                             </div>
                         </div>

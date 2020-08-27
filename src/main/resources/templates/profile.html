@@ -19,26 +19,45 @@
                 <span th:text="${actionname}"></span>
             </span><hr>
             </h2>
-            <div class="media" th:each="post:${posts.getPosts()}" th:if="${action.equals('myposts')}">
-                <div class="media-left">
-                    <a href="#" >
-                        <img class="media-object img-obj" style="height: 38px;height: 38px" th:src="${post.getUser().getAvatarUri()}">
-                    </a>
+<!--       展示通知     -->
+            <div th:if="${action.equals('myreplies')}">
+                <div  th:each="notification:${notifications.getTList()}" style="font-size: medium">
+                    <a th:text="${notification.getUser().getName()}"></a>
+                    <span th:if="${notification.getNotification().getType()==2}">回复了你的评论，在文章</span>
+                    <span th:if="${notification.getNotification().getType()==1}">评论了你的文章</span>
+                    <a th:href="@{'/post/'+${notification.getNotification().getOuterId()}}" th:text="${notification.getNotification().getOuterTitle()}" onclick="clearRes()">
+                    </a >
+
+                        <span class="label label-danger" th:if="${notification.getNotification().getStatus()==0 }" th:text="未读">
+                    </span>
+
+                    <hr>
                 </div>
-                <div class="media-body">
-                    <a th:href="@{'/post/'+${post.getId()}}">
-                        <h3 class="media-heading" th:text="${post.getTitle()}" style="margin-left: 5px"></h3>
-                    </a>
-                    <h4 th:text="${post.getDescription()}" style="margin-left: 10px;margin-top: 10px"></h4>
-                    <span style="font-size: 12px;font-weight: normal;color: #999;" ><span th:text="${post.getComment_count()}+个回复"> </span> <span th:text="${post.getLike_count()}+个点赞"></span></span>
-                    <span style="font-size: 12px;font-weight: normal;color: #999;" th:text="${#dates.format(post.getGmt_create(),'yyyy-MM-dd')}"> </span>
-                    <span>
+            </div>
+<!--          展示我的文章  -->
+            <div th:if="${action.equals('myposts')}">
+                <div class="media" th:each="post:${posts.getTList()}" >
+                    <div class="media-left">
+                        <a href="#" >
+                            <img class="media-object img-obj" style="height: 38px;height: 38px" th:src="${post.getUser().getAvatarUri()}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <a th:href="@{'/post/'+${post.getId()}}">
+                            <h3 class="media-heading" th:text="${post.getTitle()}" style="margin-left: 5px"></h3>
+                        </a>
+                        <h4 th:text="${post.getDescription()}" style="margin-left: 10px;margin-top: 10px"></h4>
+                        <span style="font-size: 12px;font-weight: normal;color: #999;" ><span th:text="${post.getComment_count()}+个回复"> </span> <span th:text="${post.getLike_count()}+个点赞"></span></span>
+                        <span style="font-size: 12px;font-weight: normal;color: #999;" th:text="${#dates.format(post.getGmt_create(),'yyyy-MM-dd')}"> </span>
+                        <span>
                             1111
                     </span>
+                    </div>
+                    <hr>
                 </div>
-                <hr>
             </div>
-            <nav aria-label="Page navigation" style="float: right">
+<!--            文章分页-->
+            <nav aria-label="Page navigation" style="float: right" th:if="${action.equals('myposts')}">
                 <ul class="pagination">
                     <li th:if="${posts.isShowFir()}">
                         <a th:href="@{'/profile/'+${action}(page=${1})}" aria-label="First">
@@ -63,6 +82,32 @@
                     </li>
                 </ul>
             </nav>
+<!--            通知分页-->
+            <nav aria-label="Page navigation" style="float: right" th:if="${action.equals('myreplies')}">
+                <ul class="pagination">
+                    <li th:if="${notifications.isShowFir()}">
+                        <a th:href="@{'/profile/'+${action}(page=${1})}" aria-label="First">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:if="${notifications.isShowPre()}">
+                        <a th:href="@{'/profile/'+${action}(page=${notifications.getCurrentPage()-1})}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                    <li  th:each="page:${notifications.getPages()}" th:class="${notifications.getCurrentPage()==page} ? 'active':''" > <a  th:text="${page}" th:href="@{'/profile/'+${action}(page=${page})}"></a></li>
+                    <li th:if="${notifications.isShowNex()}">
+                        <a th:href="@{'/profile/'+${action}(page=${notifications.getCurrentPage()+1})}" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+                    <li th:if="${notifications.isShowEnd()}">
+                        <a th:href="@{'/profile/'+${action}(page=${notifications.getCount()})}" aria-label="End">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12"  >
             <h2>
@@ -73,9 +118,9 @@
                 <a href="/profile/myposts"   th:class="${action=='myposts'} ? 'active list-group-item':'list-group-item'">
                    我发布的内容
                 </a>
-                <a href="/profile/forks"   th:class="${action=='myforks'} ? 'active list-group-item':'list-group-item'">我关注的内容</a>
-                <a href="/profile/replies" th:class="${action=='myreplies'} ? 'active list-group-item':'list-group-item'">
-                    <span class="badge">0</span>
+                <a href="/profile/myforks"   th:class="${action=='myforks'} ? 'active list-group-item':'list-group-item'">我关注的内容</a>
+                <a href="/profile/myreplies" th:class="${action=='myreplies'} ? 'active list-group-item':'list-group-item'">
+                    <span class="badge" th:text="${unread}"></span>
                     我收到的回复</a>
                 <a href="#" class="list-group-item">Porta ac consectetur ac</a>
                 <a href="#" class="list-group-item">Vestibulum at eros</a>

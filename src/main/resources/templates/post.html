@@ -11,7 +11,10 @@
     <script src="/js/community.js"></script>
     <script src="/js/handlebars.min-v4.7.6.js"></script>
     <script src="/js/moment.js"></script>
-
+    <link rel="stylesheet" href="/editor/css/editormd.preview.min.css">
+    <script src="/editor/editormd.js"></script>
+    <script src="/editor/lib/marked.min.js"></script>
+    <script src="/editor/lib/prettify.min.js"></script>
 </head>
 <body style="background-color: #efefef">
 <div th:insert="navigation::nav"></div>
@@ -49,10 +52,23 @@
             </div>
 
             <hr>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h4 th:text="${post.getDescription()}"></h4>
-                <hr>
+<!--            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+<!--                <h4 th:text="${post.getDescription()}"></h4>-->
+<!--                <hr>-->
+<!--            </div>-->
+            <div id="markdown-view" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!-- Server-side output Markdown text -->
+                <textarea style="display:none;" th:text="${post.getDescription()}"></textarea>
             </div>
+            <script type="text/javascript">
+                $(function() {
+                    var testView = editormd.markdownToHTML("markdown-view", {
+                        // markdown : "[TOC]\n### Hello world!\n## Heading 2", // Also, you can dynamic set Markdown text
+                        // htmlDecode : true,  // Enable / disable HTML tag encode.
+                        // htmlDecode : "style,script,iframe",  // Note: If enabled, you should filter some dangerous HTML tags for website security.
+                    });
+                });
+            </script>
             <!--            显示评论内容-->
             <h3>
                 <span th:text="共+${post.getComment_count()}+个评论"></span>
@@ -106,9 +122,11 @@
             </div>
             <!--            输入评论内容-->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 display-flex" style="margin-bottom: 5px">
-                <img class="media-object img-obj" style="height:45px;width: 47px"
-                     th:src="${post.getUser().getAvatarUri()}">
-                <h4 style="margin-left: 5px;padding-top: 5px" th:text="${post.getUser().getName()}"></h4>
+                <img th:if="${session.myuser!=null}" class="media-object img-obj" style="height:45px;width: 47px"
+                     th:src="${session.myuser.getAvatarUri()}">
+                <img src="/picture/default.png" th:if="${session.myuser==null}" class="media-object img-obj">
+                <h4 style="margin-left: 5px;padding-top: 5px" th:if="${session.myuser!=null}" th:text="${session.myuser.getName()}"></h4>
+                <h4 style="margin-left: 5px;padding-top: 5px" th:if="${session.myuser==null}" th:text="未登录"></h4>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 10px">
                 <input id="post_id" th:value="${post.getId()}" type="hidden">

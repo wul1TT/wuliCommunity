@@ -38,7 +38,7 @@ public class PostService {
             postDTOList.add(postDTO);
         }
         Integer totalCount = postMapper.count();
-        pageDTO.setPosts(postDTOList);
+        pageDTO.setTList(postDTOList);
         pageDTO.setPagination(totalCount, page, size);
         return pageDTO;
     }
@@ -53,7 +53,7 @@ public class PostService {
             postlist = postMapper.findListById(id, offset, size);
         }
         List<PostDTO> postDTOList = new ArrayList<>();
-        PageDTO pageDTO = new PageDTO();
+        PageDTO<PostDTO> pageDTO = new PageDTO<>();
         User user = userMapper.findById(id);
         for (Post post : postlist) {
             PostDTO postDTO = new PostDTO();
@@ -63,7 +63,7 @@ public class PostService {
             //System.out.println("jijijijijijijijijijiji");
             // System.out.println(postDTO.getDescription());
         }
-        pageDTO.setPosts(postDTOList);
+        pageDTO.setTList(postDTOList);
         pageDTO.setPagination(totalCount, page, size);
         return pageDTO;
     }

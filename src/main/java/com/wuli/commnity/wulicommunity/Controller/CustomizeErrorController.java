@@ -19,10 +19,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("${server.error.path:${error.path:/error}}")
 public class CustomizeErrorController implements ErrorController {
-    @Override
-    public String getErrorPath() {
-        return "error";
-    }
     @RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView errorHtml(HttpServletRequest request, Model model) {
         HttpStatus status = getStatus(request);
@@ -49,5 +45,10 @@ public class CustomizeErrorController implements ErrorController {
         catch (Exception ex) {
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }
+    }
+
+    @Override
+    public String getErrorPath() {
+        return "error";
     }
 }

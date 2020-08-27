@@ -19,4 +19,6 @@ public interface CommentMapper {
     List<Comment> findByCommentId(Integer id);
     @Update("update comment set comment_count=#{comment_count} where id=#{id}")
     void updateCommentCount(Comment comment1);
+    @Select("select post_id from comment where id=#{id}")
+    Integer  findParentId(@Param("id") Integer id);
 }

@@ -73,7 +73,6 @@ public class publishController {
             return "publish";
         }
         Post post = new Post();
-
         post.setTitle(title);
         post.setDescription(description);
         post.setCreator(user.getId());

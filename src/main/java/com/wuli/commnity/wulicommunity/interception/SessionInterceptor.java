@@ -1,7 +1,9 @@
 package com.wuli.commnity.wulicommunity.interception;
 
+import com.wuli.commnity.wulicommunity.mapper.NotificationMapper;
 import com.wuli.commnity.wulicommunity.mapper.UserMapper;
 import com.wuli.commnity.wulicommunity.model.User;
+import com.wuli.commnity.wulicommunity.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 public class SessionInterceptor implements HandlerInterceptor {
     @Autowired(required = false)
     private UserMapper userMapper;
+    @Autowired(required = false)
+    private NotificationService notificationService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies= request.getCookies();
@@ -28,8 +32,10 @@ public class SessionInterceptor implements HandlerInterceptor {
                     //System.out.println(user);
                     if(user!=null)
                     {
+                        Integer  unread= notificationService.getCount(user.getId());
                         request.getSession().setAttribute("myuser",user);
                         request.getSession().setAttribute("myId",user.getId());
+                        request.getSession().setAttribute("unread",unread);
                         //System.out.println(user.getName());
                     }
                     break;

@@ -181,3 +181,6 @@ function displayTab() {
    // }
 
 }
+function clearRes() {
+
+}

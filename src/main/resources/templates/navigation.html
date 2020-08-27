@@ -41,6 +41,12 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/publish">发布</a></li>
+                    <li >
+                        <a href="/profile/myreplies" class="glyphicon glyphicon-bullhorn">
+                            <span th:if="${session.unread!=0}" class="badge" style="background-color: red" th:text="${session.unread}"></span>
+                        </a>
+                    </li>
+
                     <li class="dropdown" th:if="${session.myuser!=null}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" >
                             <span th:text="${session.myuser.getName()}"></span>
@@ -48,7 +54,8 @@
                         <ul class="dropdown-menu">
                             <li><a href="#">个人资料</a></li>
                             <li><a href="/profile/myposts">内容中心</a></li>
-                            <li><a href="#">消息中心</a></li>
+                            <li><a href="#">消息</a>
+                            </li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/logout">退出登录</a></li>
                         </ul>

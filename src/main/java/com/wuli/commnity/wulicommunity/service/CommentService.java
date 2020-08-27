@@ -1,14 +1,17 @@
 package com.wuli.commnity.wulicommunity.service;
 
 import com.wuli.commnity.wulicommunity.dto.CommentCurrentDTO;
-import com.wuli.commnity.wulicommunity.dto.CommentDTO;
+import com.wuli.commnity.wulicommunity.enums.StatusOfNotification;
 import com.wuli.commnity.wulicommunity.enums.TypeOfComment;
+import com.wuli.commnity.wulicommunity.enums.TypeOfNotification;
 import com.wuli.commnity.wulicommunity.exception.CustomizeErrorCode;
 import com.wuli.commnity.wulicommunity.exception.CustomizeException;
 import com.wuli.commnity.wulicommunity.mapper.CommentMapper;
+import com.wuli.commnity.wulicommunity.mapper.NotificationMapper;
 import com.wuli.commnity.wulicommunity.mapper.PostMapper;
 import com.wuli.commnity.wulicommunity.mapper.UserMapper;
 import com.wuli.commnity.wulicommunity.model.Comment;
+import com.wuli.commnity.wulicommunity.model.Notification;
 import com.wuli.commnity.wulicommunity.model.Post;
 import com.wuli.commnity.wulicommunity.model.User;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +30,8 @@ public class CommentService {
     PostMapper postMapper;
     @Autowired(required = false)
     private UserMapper userMapper;
+    @Autowired(required = false)
+    private NotificationMapper notificationMapper;
     @Transactional
     public void insert(Comment comment) {
         if(comment.getPost_id()==null||comment.getPost_id()==0)
@@ -49,6 +54,8 @@ public class CommentService {
                 post.setComment_count(post.getComment_count()+1);
                 postMapper.updateFullPost(post);
                 commentMapper.insert(comment);
+              Notification notification= setNotification(comment,post.getCreator(),post.getId(), TypeOfNotification.REPLY_POST,post.getTitle());
+            notificationMapper.insert(notification);
             }
         }
         else//回复评论
@@ -60,11 +67,29 @@ public class CommentService {
             }
             else
             {
+                Integer parentId=commentMapper.findParentId(comment1.getId());
+                Post post=postMapper.findById(parentId);
+                post.setComment_count(post.getComment_count()+1);
+                postMapper.updateFullPost(post);//增加文章评论数
                 comment1.setComment_count(comment1.getComment_count()+1);
-                commentMapper.updateCommentCount(comment1);
-                commentMapper.insert(comment);
+                commentMapper.updateCommentCount(comment1);//增加父级评论数
+                commentMapper.insert(comment);//把二级评论放入数据库
+                Notification notification=setNotification(comment, comment1.getCommentator(),post.getId(), TypeOfNotification.REPLY_COMMENT,post.getTitle());//创建通知
+                notificationMapper.insert(notification);
             }
         }
+    }
+
+    private Notification setNotification(Comment comment, Integer parentCommentator, Integer parentId, TypeOfNotification typeOfNotification,String title) {
+        Notification notification=new Notification();
+        notification.setGmt_create(System.currentTimeMillis());
+        notification.setNotifier(comment.getCommentator());
+        notification.setReceiver(parentCommentator);
+        notification.setType(typeOfNotification.getType());
+        notification.setStatus(StatusOfNotification.UNREAD.getStatus());
+        notification.setOuterTitle(title);
+        notification.setOuterId(parentId);
+        return notification;
     }
 
     public List<CommentCurrentDTO> getByPostId(Integer id) {

@@ -11,7 +11,7 @@ public interface PostMapper {
     @Insert("insert into post (title,description,gmt_create,gmt_modified,creator,tag) values(#{title},#{description},#{gmt_create},#{gmt_modified},#{creator},#{tag})")
     public void create(Post post);
 
-    @Select("select *from post order by gmt_create desc limit #{size} offset #{offset} ")
+    @Select("select *from post order by gmt_modified desc limit #{size} offset #{offset} ")
     List<Post> list(@Param("offset") Integer offset,@Param("size") Integer size);
 
     @Select(" select count(1) from post;")
@@ -20,7 +20,7 @@ public interface PostMapper {
     @Select("select count(1) from post where creator=#{userId}")
     Integer findCountById(@Param("userId") Integer userId);
 
-    @Select("select *from post where creator=#{userId} order by gmt_create desc limit #{size} offset #{offset} ")
+    @Select("select *from post where creator=#{userId} order by gmt_modified desc limit #{size} offset #{offset} ")
     List<Post> findListById(@Param("userId") Integer id, @Param("offset") Integer offset, @Param("size") Integer size);
 
     @Select("select * from post where id=#{id}")
