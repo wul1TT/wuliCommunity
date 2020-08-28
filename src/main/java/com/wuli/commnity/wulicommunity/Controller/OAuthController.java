@@ -41,7 +41,9 @@ public class OAuthController {
         accessTokenDTO.setClient_id(clientId);
         accessTokenDTO.setClient_secret(clientSecret);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
+        System.out.println(accessToken);
         GithubUser githubUser=githubProvider.getUser(accessToken);
+
         //System.out.println(githubUser.getName());
         if(githubUser!=null)
         {
@@ -60,6 +62,7 @@ public class OAuthController {
         }
         else
         {
+            System.out.println("user为空");
             return "redirect:/";
         }
 

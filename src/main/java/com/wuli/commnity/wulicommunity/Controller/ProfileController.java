@@ -49,7 +49,7 @@ public class ProfileController {
         {
             if(page>postMapper.findCountById(user.getId())/size+1)
                 page=postMapper.findCountById(user.getId())/size+1;
-            System.out.println(page);
+            //System.out.println(page);
         }
         if("myposts".equals(action))
         {
