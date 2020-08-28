@@ -19,17 +19,18 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/">www.wulitt.com<span class="sr-only">(current)</span></a></li>
-                    <li><a href="https://www.jianshu.com/u/45d76b5a242a">我的简书主页</a></li>
+                    <li> <a th:text="Powered-By-SpringBoot">
+                    </a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">菜单 <span class="caret"></span></a>
+                        <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">菜单(暂不可用) <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">设置1</a></li>
-                            <li><a href="#">设置2</a></li>
-                            <li><a href="#">Something else here</a></li>
+                            <li><a>设置1</a></li>
+                            <li><a >设置2</a></li>
+                            <li><a >Something else here</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+                            <li><a >Separated link</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">One more separated link</a></li>
+                            <li><a >One more separated link</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -37,7 +38,7 @@
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="输入关键词">
                     </div>
-                    <button type="submit" class="btn btn-default">搜索</button>
+                    <button type="button" class="btn btn-default">搜索(不可用)</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/publish">发布</a></li>
