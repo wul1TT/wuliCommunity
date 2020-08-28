@@ -60,8 +60,11 @@
                             <li><a href="/logout">退出登录</a></li>
                         </ul>
                     </li>
-                    <li th:if="${session.myuser==null}"><a href="https://github.com/login/oauth/authorize?client_id=Iv1.749148c7d9a1f9af&redirect_uri=http://127.0.0.1:8081/callback&scope=user&state=1">登录</a></li>
-
+                    <li th:if="${session.myuser==null}">
+                        <a th:href="@{https://github.com/login/oauth/authorize(client_id='Iv1.749148c7d9a1f9af',redirect_uri=${#httpServletRequest.getRequestURL()+'callback'},scope='user',state=1)}">
+                        登录
+                        </a>
+                    </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
