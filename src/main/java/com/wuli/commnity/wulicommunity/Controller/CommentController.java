@@ -18,8 +18,6 @@ import java.util.List;
 @Controller
 public class CommentController {
     @Autowired(required = false)
-    CommentMapper commentMapper;
-    @Autowired(required = false)
     CommentService commentService;
     @ResponseBody
     @RequestMapping(value = "/comment",method = RequestMethod.POST)

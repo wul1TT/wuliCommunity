@@ -11,7 +11,6 @@ public interface UserMapper {
     public void insert(User user);
      @Select("select *from user where id=#{id}")
     User findById(@Param("id") Integer id);
-
     @Select("select distinct *from user where account_id=#{account_id}")
     User findByAccountId(@Param("account_id") String account_id);
     @Update("update user set token=#{token},time_update=#{time_update} where account_id=#{account_id}")

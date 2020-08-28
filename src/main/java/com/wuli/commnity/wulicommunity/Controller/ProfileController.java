@@ -20,8 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ProfileController {
     @Autowired(required = false)
-    private UserMapper userMapper;
-    @Autowired(required = false)
     private PostMapper postMapper;
     @Autowired(required = false)
     private PostService postService;

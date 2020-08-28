@@ -123,4 +123,8 @@ public class PostService {
         releatedPosts = postMapper.findRelated(rePostDTO);
         return releatedPosts;
     }
+
+    public Integer count() {
+        return postMapper.count();
+    }
 }

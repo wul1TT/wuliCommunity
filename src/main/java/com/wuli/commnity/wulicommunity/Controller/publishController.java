@@ -22,8 +22,6 @@ public class publishController {
     @Autowired(required = false)
     private PostMapper postMapper;
     @Autowired(required = false)
-    private UserMapper userMapper;
-    @Autowired(required = false)
     private PostService postService;
     @RequestMapping("/publish/{id}")
     public String edit(@PathVariable(name = "id")Integer id,Model model)

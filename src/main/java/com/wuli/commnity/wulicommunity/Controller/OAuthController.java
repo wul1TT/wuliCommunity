@@ -28,8 +28,6 @@ public class OAuthController {
     @Value("${github.client.uri}")
     private String clientUri;
    @Autowired(required = false)
-    private UserMapper userMapper;
-   @Autowired(required = false)
    private UserService userService;
     @RequestMapping("/callback")
     public String CallBack(@RequestParam(name = "code")String code,

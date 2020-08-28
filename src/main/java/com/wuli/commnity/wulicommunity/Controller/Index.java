@@ -31,15 +31,15 @@ public class Index {
 
          if(page<1)
              page=1;
-         if(postMapper.count()%size==0)
+         if(postService.count()%size==0)
          {
-             if(page>postMapper.count()/size)
-                 page=postMapper.count()/size;
+             if(page>postService.count()/size)
+                 page=postService.count()/size;
          }
-         if(postMapper.count()%size!=0)
+         if(postService.count()%size!=0)
     {
-        if(page>postMapper.count()/size+1)
-            page=postMapper.count()/size+1;
+        if(page>postService.count()/size+1)
+            page=postService.count()/size+1;
     }
         PageDTO postList=postService.list(page,size);
          model.addAttribute("posts",postList);
