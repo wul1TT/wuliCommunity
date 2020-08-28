@@ -48,28 +48,6 @@ public class CustomizeExceptionHandler {
             }
             return null;
         }
-        else if(contentype.contains("multipart/form-data")){
-            System.out.println(contentype);
-            MultipartHttpServletRequest multipartHttpServletRequest=(MultipartHttpServletRequest) request;
-            MultipartFile file= multipartHttpServletRequest.getFile("editormd-image-file");
-            FileDTO fileDTO=new FileDTO();
-            fileDTO.setSuccess(1);
-            fileDTO.setMessage("violent");
-            fileDTO.setUrl("/picture/"+file.getOriginalFilename());
-            System.out.println("success");
-            System.out.println("fail");
-            try {
-                response.setStatus(200);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("utf-8");
-                PrintWriter printWriter=response.getWriter();
-                printWriter.write(JSON.toJSONString(fileDTO));
-                printWriter.close();
-            } catch (IOException e) {
-
-            }
-            return null;
-        }
         else
         {
             System.out.println("111");
